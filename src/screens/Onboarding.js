@@ -2,16 +2,18 @@ import { useState } from 'react';
 import {
   Image,
   KeyboardAvoidingView,
+  Platform,
   StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
   View,
 } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { validateEmail } from '../utils';
 
-const Onboarding = ({ onLayoutRootView }) => {
+const OnboardingScreen = ({ navigation }) => {
   const [userName, setUserName] = useState('');
   const [userEmail, setUserEmail] = useState('');
   const [userNameValid, setUserNameValid] = useState(true);
@@ -31,7 +33,9 @@ const Onboarding = ({ onLayoutRootView }) => {
     !userName || !userEmail || !userNameValid || !userEmailValid;
 
   return (
-    <KeyboardAvoidingView style={styles.container} onLayout={onLayoutRootView}>
+    <KeyboardAvoidingView
+      style={styles.container}
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
       <View style={styles.imageContainer}>
         <Image
           style={styles.image}
@@ -84,6 +88,15 @@ const Onboarding = ({ onLayoutRootView }) => {
             styles.buttonTouchable,
             buttonDisabled && { backgroundColor: '#CBD2D9' },
           ]}
+          onPress={() => {
+            if (!buttonDisabled) {
+              AsyncStorage.setItem('userSignedIn', JSON.stringify(true));
+              navigation.navigate('Profile', {
+                userName,
+                userEmail,
+              });
+            }
+          }}
         >
           <Text
             style={[styles.buttonText, buttonDisabled && { color: '#485D6B' }]}
@@ -163,8 +176,8 @@ const styles = StyleSheet.create({
   buttonText: {
     fontSize: 26,
     fontFamily: 'Karla-Regular',
-    color: '#FFFFFF',
+    color: 'white',
   },
 });
 
-export default Onboarding;
+export default OnboardingScreen;
