@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import {
   Image,
   StyleSheet,
@@ -12,9 +12,12 @@ import * as ImagePicker from 'expo-image-picker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
+import { UserSignedInContext } from '../store/context';
 import { validateEmail } from '../utils';
 
 const ProfileScreen = ({ navigation, route }) => {
+  const { setIsOnboardingCompleted } = useContext(UserSignedInContext);
+
   const [imageSrc, setImageSrc] = useState('');
   const [userFirstName, setUserFirstName] = useState(
     route.params?.userName ?? ''
@@ -339,7 +342,7 @@ const ProfileScreen = ({ navigation, route }) => {
           }}
           onPress={() => {
             AsyncStorage.clear();
-            navigation.goBack();
+            setIsOnboardingCompleted(false);
           }}>
           <Text>Log out</Text>
         </TouchableOpacity>
@@ -378,11 +381,8 @@ const ProfileScreen = ({ navigation, route }) => {
               },
               buttonDisabled && { backgroundColor: '#CBD2D9' },
             ]}
-            onPress={() => {
-              if (!buttonDisabled) {
-                saveAll();
-              }
-            }}>
+            disabled={buttonDisabled}
+            onPress={() => saveAll()}>
             <Text
               style={[
                 { color: 'white' },

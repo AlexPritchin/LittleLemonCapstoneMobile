@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import {
   Image,
   KeyboardAvoidingView,
@@ -11,9 +11,12 @@ import {
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+import { UserSignedInContext } from '../store/context';
 import { validateEmail } from '../utils';
 
 const OnboardingScreen = ({ navigation }) => {
+  const { setIsOnboardingCompleted } = useContext(UserSignedInContext);
+
   const [userName, setUserName] = useState('');
   const [userEmail, setUserEmail] = useState('');
   const [userNameValid, setUserNameValid] = useState(true);
@@ -88,14 +91,14 @@ const OnboardingScreen = ({ navigation }) => {
             styles.buttonTouchable,
             buttonDisabled && { backgroundColor: '#CBD2D9' },
           ]}
+          disabled={buttonDisabled}
           onPress={() => {
-            if (!buttonDisabled) {
-              AsyncStorage.setItem('userSignedIn', JSON.stringify(true));
-              navigation.navigate('Profile', {
-                userName,
-                userEmail,
-              });
-            }
+            AsyncStorage.setItem('userSignedIn', JSON.stringify(true));
+            setIsOnboardingCompleted(true);
+            // navigation.navigate('Home', {
+            //   userName,
+            //   userEmail,
+            // });
           }}
         >
           <Text

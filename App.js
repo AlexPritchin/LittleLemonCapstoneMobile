@@ -2,15 +2,12 @@ import { useCallback, useEffect, useState } from 'react';
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import OnboardingScreen from "./src/screens/Onboarding";
-import ProfileScreen from './src/screens/Profile';
+import { UserSignedInContext } from './src/store/context';
+import MainStack from './src/routes/MainStack';
 
 SplashScreen.preventAutoHideAsync();
-
-const Stack = createNativeStackNavigator();
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -39,25 +36,10 @@ export default function App() {
   }
 
   return (
-    <NavigationContainer onReady={onLayoutRootView}>
-      <Stack.Navigator>
-        {!isOnboardingCompleted && (
-          <Stack.Screen
-            name='Onboarding'
-            component={OnboardingScreen}
-            options={{
-              headerShown: false,
-            }}
-          />
-        )}
-        <Stack.Screen
-          name='Profile'
-          component={ProfileScreen}
-          options={{
-            title: 'Personal information'
-          }}
-        />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <UserSignedInContext.Provider value={{ setIsOnboardingCompleted }}>
+      <NavigationContainer onReady={onLayoutRootView}>
+        <MainStack isOnboardingCompleted={isOnboardingCompleted} />
+      </NavigationContainer>
+    </UserSignedInContext.Provider>
   );
 }
