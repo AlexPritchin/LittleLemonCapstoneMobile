@@ -4,8 +4,7 @@ import {
   View,
 } from 'react-native';
 
-const ListItem = ({ item }) => {
-
+const MenuListItem = ({ item }) => {
   return (
     <View style={{ height: 135, flexDirection: 'row', alignItems: 'center', gap: 10, paddingVertical: 20 }}>
       <View style={{ flex: 1 }}>
@@ -22,4 +21,4 @@ const ListItem = ({ item }) => {
   );
 };
 
-export default ListItem;
+export default MenuListItem;

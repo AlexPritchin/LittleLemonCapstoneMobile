@@ -12,6 +12,7 @@ SplashScreen.preventAutoHideAsync();
 export default function App() {
   const [fontsLoaded] = useFonts({
     'Karla-Regular': require('./assets/fonts/Karla-Regular.ttf'),
+    'Markazi-Regular': require('./assets/fonts/MarkaziText-Regular.ttf'),
   });
   const [isOnboardingCompleted, setIsOnboardingCompleted] = useState(false);
   const [isOnboardingCompletedLoaded, setIsOnboardingCompletedLoaded] = useState(false);

@@ -36,7 +36,8 @@ const MainStack = ({ isOnboardingCompleted }) => {
             name='Profile'
             component={ProfileScreen}
             options={{
-              title: 'Personal information'
+              title: 'Personal information',
+              headerBackTitleVisible: false
             }}
           />
         </>

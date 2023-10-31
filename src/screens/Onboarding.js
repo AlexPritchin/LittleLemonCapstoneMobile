@@ -94,11 +94,11 @@ const OnboardingScreen = ({ navigation }) => {
           disabled={buttonDisabled}
           onPress={() => {
             AsyncStorage.setItem('userSignedIn', JSON.stringify(true));
+            AsyncStorage.multiSet([
+              ['firstName', userName],
+              ['email', userEmail],
+            ]);
             setIsOnboardingCompleted(true);
-            // navigation.navigate('Home', {
-            //   userName,
-            //   userEmail,
-            // });
           }}
         >
           <Text

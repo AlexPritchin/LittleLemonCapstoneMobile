@@ -35,3 +35,18 @@ export function saveMenuItems(menuItems) {
     tx.executeSql(queryStr, paramsArr);
   });
 }
+
+export async function filterByQueryAndCategories(query, activeCategories) {
+  return new Promise((resolve, reject) => {
+    db.transaction((tx) => {
+      tx.executeSql(
+        'SELECT * FROM menu WHERE name LIKE ? AND category IN (?,?,?)',
+        [`%${query}%`, ...activeCategories],
+        (_, { rows }) => {
+          resolve(rows._array);
+        }
+      );
+    },
+    reject);
+  });
+}

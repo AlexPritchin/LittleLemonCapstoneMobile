@@ -71,6 +71,10 @@ const ProfileScreen = ({ navigation, route }) => {
     });
   }, [navigation, imageSrc, userFirstName, userLastName]);
 
+  useEffect(() => {
+    resetAll();
+  }, []);
+
   const userFirstNameChange = (text) => {
     setUserFirstName(text);
     setUserFirstNameValid(!!text);
